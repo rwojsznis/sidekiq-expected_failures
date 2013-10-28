@@ -8,9 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Sidekiq::ExpectedFailures::VERSION
   spec.authors       = ["Rafal Wojsznis"]
   spec.email         = ["rafal.wojsznis@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = spec.summary = "If you don't rely on sidekiq' retry behavior, you handle exceptions on your own and want to keep track of them - this thing is for you."
+  spec.homepage      = "https://github.com/emq/sidekiq-expected_failures"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
