@@ -1,0 +1,91 @@
+<%= js :expected %>
+<%= js :bootstrap %>
+
+<h3>Expected failures log
+  <% if @date %>
+    <small>(<%= @date %>)</small>
+  <% end %>
+</h3>
+
+<% unless @counters.empty? %>
+  <div class="well well-sm clearfix">
+    <a href="<%= root_path %>expected_failures/clear/counters" class="btn btn-default btn-sm pull-right">Clear counters</span></a>
+
+    <dl class="dl-horizontal" style="margin: 0">
+      <% @counters.each do |exception, count| %>
+        <dt><%= exception %></dt>
+        <dd><%= count %></dd>
+      <% end %>
+    </dl>
+
+  </div>
+<% end %>
+
+<% if @jobs.any? %>
+  <div class="modal fade" id="job-details">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Job arguments</h4>
+        </div>
+
+        <div class="modal-body">
+          <table class="table table-condensed table-striped">
+            <tbody>
+              <!-- job arguments -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <form id="filter-jobs" class="form-inline pull-left" action="<%= root_path %>expected_failures" method="get">
+    <label>Choose date:</label>
+    <select name="date">
+      <% @dates.each do |date, count| %>
+        <option value="<%= date %>" <%= "selected" if date == @date %>><%= date %> (<%= count %>)</option>
+      <% end %>
+    </select>
+  </form>
+
+  <div class="pull-right">
+    <a href="<%= root_path %>expected_failures/clear/old" class="btn btn-default btn-sm">Clear older than today</a>&nbsp;
+    <a href="<%= root_path %>expected_failures/clear/all" class="btn btn-default btn-sm">Clear all failed</a>
+  </div>
+
+  <p class="clearfix"></p>
+
+  <table id="expected" class="queues table table-hover table-bordered table-striped table-white">
+    <thead>
+      <th>Datetime</th>
+      <th>Worker</th>
+      <th>Exception</th>
+      <th>Queue</th>
+      <th>Arguments</th>
+    </thead>
+    <% @jobs.each do |job| %>
+      <tr>
+        <td><%= Time.parse(job['failed_at']).strftime('%m/%d/%Y %H:%M:%S') %></td>
+        <td><%= job["worker"] %></td>
+        <td><%= job["exception"] %> <small>(<%= job["error"]%>)</small></td>
+        <td><%= job["queue"] %></td>
+        <td><%= link_to_details(job) %></td>
+      </tr>
+    <% end %>
+  </table>
+
+  <%= erb :_paging, :locals => { :url => "#{root_path}expected_failures/#{@date}" } %>
+
+<% else %>
+  <div class="alert alert-success">
+    No failed jobs found
+  </div>
+<% end %>
