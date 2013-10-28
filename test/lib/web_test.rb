@@ -125,6 +125,17 @@ module Sidekiq
         end
 
         it 'can clear counters' do
+          get '/expected_failures'
+          last_response.body.must_match(/Custom::Error/)
+
+          get '/expected_failures/clear/counters'
+          last_response.status.must_equal(302)
+          last_response.location.must_match(/expected_failures$/)
+
+          get '/expected_failures'
+          last_response.body.wont_match(/Custom::Error/)
+
+          assert_nil redis("get", "expected:count")
         end
       end
     end

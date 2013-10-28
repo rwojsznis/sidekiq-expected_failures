@@ -30,6 +30,8 @@ module Sidekiq
             Sidekiq::ExpectedFailures.clear_old
           when 'all'
             Sidekiq::ExpectedFailures.clear_all
+          when 'counters'
+            Sidekiq::ExpectedFailures.clear_counters
           end
 
           redirect "#{root_path}expected_failures"

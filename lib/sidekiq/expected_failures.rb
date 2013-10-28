@@ -5,12 +5,17 @@ require "sidekiq/expected_failures/web"
 
 module Sidekiq
   module ExpectedFailures
+
     def self.dates
       Sidekiq.redis do |c|
         c.smembers "expected:dates"
       end.sort.reverse.each_with_object({}) do |d, hash|
         hash[d] = Sidekiq.redis { |c| c.llen("expected:#{d}") }
       end
+    end
+
+    def self.counters
+      Sidekiq.redis { |r| r.hgetall("expected:count") }
     end
 
     def self.clear_all
@@ -22,8 +27,8 @@ module Sidekiq
       clear(range)
     end
 
-    def self.counters
-      Sidekiq.redis { |r| r.hgetall("expected:count") }
+    def self.clear_counters
+      Sidekiq.redis { |r| r.del("expected:count") }
     end
 
     private
