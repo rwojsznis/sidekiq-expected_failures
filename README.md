@@ -39,10 +39,11 @@ class ApiCallWorker
     # ensure block or some other stuff
     # ...
   end
-
 ```
 
 You can pass array of exceptions to handle inside `sidekiq_options`. This is how web interface looks like:
+
+*image pending*
 
 It logs each failed jobs to to redis list (per day) and keep global counters (per exception class).
 

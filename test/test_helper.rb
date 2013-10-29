@@ -10,7 +10,6 @@ require "rack/test"
 
 require "sidekiq"
 require "sidekiq-expected_failures"
-require "celluloid"
 require "test_workers"
 
 Sidekiq.logger.level = Logger::ERROR
