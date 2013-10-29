@@ -28,7 +28,7 @@
 
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Job arguments</h4>
+          <h4 class="modal-title"><!-- title --></h4>
         </div>
 
         <div class="modal-body">
@@ -76,7 +76,7 @@
         <td><%= Time.parse(job['failed_at']).strftime('%m/%d/%Y %H:%M:%S') %></td>
         <td><%= job["worker"] %></td>
         <td><%= job["exception"] %> <small>(<%= job["error"]%>)</small></td>
-        <td><%= job["queue"] %></td>
+        <td><a href="<%= "#{root_path}/queues/#{job["queue"]}"%>"><%= job["queue"] %></a></td>
         <td><%= link_to_details(job) %></td>
       </tr>
     <% end %>
@@ -86,6 +86,6 @@
 
 <% else %>
   <div class="alert alert-success">
-    No failed jobs found
+    No failed jobs found.
   </div>
 <% end %>

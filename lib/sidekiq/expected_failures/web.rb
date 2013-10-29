@@ -20,7 +20,7 @@ module Sidekiq
           def link_to_details(job)
             data = []
             job["args"].each_with_index { |argument, index| data << "data-#{index+1}='#{h argument.inspect}'" }
-            "<a href='#' #{data.join(' ')}>Details</a>"
+            "<a href='#' #{data.join(' ')} title='#{job["worker"]}'>Details</a>"
           end
         end
 
