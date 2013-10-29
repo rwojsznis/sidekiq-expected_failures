@@ -48,3 +48,9 @@ end
 
 Sidekiq::Web.register Sidekiq::ExpectedFailures::Web
 Sidekiq::Web.tabs["Expected Failures"] = "expected_failures"
+
+Sidekiq.configure_server do |config|
+  config.server_middleware do |chain|
+    chain.add Sidekiq::ExpectedFailures::Middleware
+  end
+end
