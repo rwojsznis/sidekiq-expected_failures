@@ -64,6 +64,8 @@
 
   <p class="clearfix"></p>
 
+  <%= erb :_paging, :locals => { :url => "#{root_path}expected_failures/#{@date}" } %>
+
   <table id="expected" class="queues table table-hover table-bordered table-striped table-white">
     <thead>
       <th>Datetime</th>
