@@ -1,4 +1,4 @@
-## 0.2.0
+## 0.2.0 (in progress)
 
 - removed `sinatra-assetpack` dependency - js assets are now served inline
   (it seemed like a overkill to include that gem just for just two files)
