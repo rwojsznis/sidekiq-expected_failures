@@ -4,11 +4,9 @@ module Sidekiq
       include Sidekiq::Util
 
       def call(worker, msg, queue)
-        exceptions = worker.class.get_sidekiq_options['expected_failures'].to_a
-
         yield
 
-        rescue *exceptions => e
+        rescue *handled_exceptions(worker) => e
           data = {
             failed_at: Time.now.strftime("%Y/%m/%d %H:%M:%S %Z"),
             args:      msg['args'],
@@ -23,6 +21,10 @@ module Sidekiq
       end
 
       private
+
+        def handled_exceptions(worker)
+          (Sidekiq.expected_failures || worker.class.get_sidekiq_options['expected_failures']).to_a
+        end
 
         def log_exception(data)
           Sidekiq.redis do |conn|

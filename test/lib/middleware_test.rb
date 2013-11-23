@@ -8,6 +8,7 @@ module Sidekiq
         Sidekiq.redis = REDIS
         Sidekiq.redis { |c| c.flushdb }
         Timecop.freeze(Time.local(2013, 1, 10))
+        Sidekiq.expected_failures = nil
       end
 
       after { Timecop.return }
@@ -19,6 +20,22 @@ module Sidekiq
         assert_raises RuntimeError do
           handler.call(RegularWorker.new, msg, 'default') do
             raise "Whooo, hold on there!"
+          end
+        end
+      end
+
+      it 'can can be configured to handle exceptions by default' do
+        Sidekiq.expected_failures = [VeryOwn::CustomException]
+
+        assert_block do
+          handler.call(RegularWorker.new, msg, 'default') do
+            raise VeryOwn::CustomException
+          end
+        end
+
+        assert_raises RuntimeError do
+          handler.call(RegularWorker.new, msg, 'default') do
+            raise "This is not handled by default"
           end
         end
       end

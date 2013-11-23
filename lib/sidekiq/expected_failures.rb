@@ -4,6 +4,15 @@ require "sidekiq/expected_failures/middleware"
 require "sidekiq/expected_failures/web"
 
 module Sidekiq
+
+  def self.expected_failures=(exceptions)
+    @expected_failures = exceptions
+  end
+
+  def self.expected_failures
+    @expected_failures
+  end
+
   module ExpectedFailures
 
     def self.dates

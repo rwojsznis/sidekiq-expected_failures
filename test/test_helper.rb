@@ -4,6 +4,7 @@ Encoding.default_internal = Encoding::UTF_8
 require "minitest/autorun"
 require "minitest/spec"
 require "minitest/mock"
+require "minitest/pride"
 
 require "timecop"
 require "rack/test"
