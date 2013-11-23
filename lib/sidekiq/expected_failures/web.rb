@@ -13,14 +13,9 @@ module Sidekiq
           end
         end
 
-        app.get "/expected_failures/clear/:what" do
-          case params[:what]
-          when 'old'
-            Sidekiq::ExpectedFailures.clear_old
-          when 'all'
-            Sidekiq::ExpectedFailures.clear_all
-          when 'counters'
-            Sidekiq::ExpectedFailures.clear_counters
+        app.post "/expected_failures/clear" do
+          if %w(old all counters).include?(params[:what])
+            Sidekiq::ExpectedFailures.send("clear_#{params[:what]}")
           end
 
           redirect "#{root_path}expected_failures"

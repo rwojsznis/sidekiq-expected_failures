@@ -14,6 +14,8 @@
 Note: if you specify `expected_failure`s for given worker defaults will be
 discarded (for that worker).
 
+- small front-end adjustments
+
 ## 0.0.1
 
 - Initial release

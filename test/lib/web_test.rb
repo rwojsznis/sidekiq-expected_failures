@@ -80,7 +80,7 @@ module Sidekiq
         get '/expected_failures'
         last_response.body.must_match(/HardWorker/)
 
-        get '/expected_failures/clear/all'
+        post '/expected_failures/clear', { what: 'all' }
         last_response.status.must_equal(302)
         last_response.location.must_match(/expected_failures$/)
 
@@ -93,7 +93,7 @@ module Sidekiq
         last_response.body.must_match(/2013-09-10/)
         last_response.body.must_match(/2013-09-09/)
 
-        get '/expected_failures/clear/old'
+        post '/expected_failures/clear', { what: 'old' }
         last_response.status.must_equal(302)
         last_response.location.must_match(/expected_failures$/)
 
@@ -111,7 +111,7 @@ module Sidekiq
           create_sample_failure
           get '/expected_failures'
           last_response.body.wont_match(/dl-horizontal/)
-          last_response.body.wont_match(/Clear counters/i)
+          last_response.body.wont_match(/All counters/i)
         end
       end
 
@@ -121,14 +121,14 @@ module Sidekiq
         it 'displays counters' do
           get '/expected_failures'
           last_response.body.must_match(/dl-horizontal/)
-          last_response.body.must_match(/Clear counters/i)
+          last_response.body.must_match(/All counters/i)
         end
 
         it 'can clear counters' do
           get '/expected_failures'
           last_response.body.must_match(/Custom::Error/)
 
-          get '/expected_failures/clear/counters'
+          post '/expected_failures/clear', { what: 'counters' }
           last_response.status.must_equal(302)
           last_response.location.must_match(/expected_failures$/)
 

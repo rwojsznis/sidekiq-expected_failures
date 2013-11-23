@@ -9,9 +9,7 @@
 </h3>
 
 <% unless @counters.empty? %>
-  <div class="well well-sm clearfix">
-    <a href="<%= root_path %>expected_failures/clear/counters" class="btn btn-default btn-sm pull-right">Clear counters</span></a>
-
+  <div class="well well-sm">
     <dl class="dl-horizontal" style="margin: 0">
       <% @counters.each do |exception, count| %>
         <dt><%= exception %></dt>
@@ -20,6 +18,26 @@
     </dl>
 
   </div>
+<% end %>
+
+<% if @jobs.any? || @counters.any? %>
+  <form id="clear-jobs" method="post" class="form-inline pull-right" action="<%= root_path %>expected_failures/clear">
+    <label>Clear:</label>
+    <select name="what">
+      <option selected>Choose...</option>
+      <% if @jobs.any? %>
+        <optgroup label="Jobs">
+          <option value="old">Older than today</option>
+          <option value="all">All failed</option>
+        </optgroup>
+      <% end %>
+      <% if @counters.any? %>
+        <optgroup label="Counters">
+          <option value="counters">All counters</option>
+        </optgroup>
+      <% end %>
+    </select>
+  </form>
 <% end %>
 
 <% if @jobs.any? %>
@@ -57,11 +75,6 @@
     </select>
   </form>
 
-  <div class="pull-right">
-    <a href="<%= root_path %>expected_failures/clear/old" class="btn btn-default btn-sm">Clear older than today</a>&nbsp;
-    <a href="<%= root_path %>expected_failures/clear/all" class="btn btn-default btn-sm">Clear all failed</a>
-  </div>
-
   <p class="clearfix"></p>
 
   <%= erb :_paging, :locals => { :url => "#{root_path}expected_failures/#{@date}" } %>
@@ -88,6 +101,7 @@
   <%= erb :_paging, :locals => { :url => "#{root_path}expected_failures/#{@date}" } %>
 
 <% else %>
+  <p class="clearfix"></p>
   <div class="alert alert-success">
     No failed jobs found.
   </div>
