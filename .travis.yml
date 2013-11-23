@@ -4,5 +4,8 @@ rvm:
   - 1.9.3
   - 2.0.0
 
+services:
+  - redis-server
+
 notifications:
   email: false
