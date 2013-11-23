@@ -1,20 +1,9 @@
-require 'sinatra/assetpack'
-
 module Sidekiq
   module ExpectedFailures
     module Web
 
       def self.registered(app)
-        web_dir    = File.expand_path("../../../../web", __FILE__)
-        assets_dir = File.join(web_dir, "assets")
-
-        app.register Sinatra::AssetPack
-
-        app.assets do
-          serve '/js', from: assets_dir
-          js 'expected',  ['/js/expected.js']
-          js 'bootstrap', ['/js/bootstrap.js']
-        end
+        web_dir = File.expand_path("../../../../web", __FILE__)
 
         app.helpers do
           def link_to_details(job)
@@ -47,6 +36,10 @@ module Sidekiq
             @jobs = @jobs.map { |msg| Sidekiq.load_json(msg) }
             @counters = Sidekiq::ExpectedFailures.counters
           end
+
+          @javascript = %w(expected bootstrap).map do |file|
+            File.read(File.join(web_dir, "assets/#{file}.js"))
+          end.join
 
           erb File.read(File.join(web_dir, "views/expected_failures.erb"))
         end
