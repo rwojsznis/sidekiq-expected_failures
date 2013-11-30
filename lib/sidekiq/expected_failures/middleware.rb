@@ -21,7 +21,7 @@ module Sidekiq
             queue:     queue
           }
 
-          log_exception(data, ex)
+          log_exception(data, ex, msg)
       end
 
       private
@@ -34,7 +34,7 @@ module Sidekiq
           [handled_exceptions[ex.class]].flatten.compact
         end
 
-        def log_exception(data, ex)
+        def log_exception(data, ex, msg)
           result = Sidekiq.redis do |conn|
             conn.multi do |m|
               m.lpush("expected:#{today}", Sidekiq.dump_json(data))
@@ -43,7 +43,7 @@ module Sidekiq
             end
           end
 
-          handle_exception(ex) if exception_intervals(ex).include?(result[0])
+          handle_exception(ex, msg) if exception_intervals(ex).include?(result[0])
         end
 
         def today

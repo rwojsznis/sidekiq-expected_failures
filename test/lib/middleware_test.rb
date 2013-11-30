@@ -115,7 +115,7 @@ module Sidekiq
 
         it 'can be configured to notify once' do
           exception = ZeroDivisionError.new
-          handler.expects(:handle_exception).with(exception).once.returns(true)
+          handler.expects(:handle_exception).with(exception, msg).once.returns(true)
 
           50.times do
             handler.call(CustomizedWorker.new, msg, 'default') do
