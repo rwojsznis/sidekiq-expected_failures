@@ -24,4 +24,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "sinatra"
   spec.add_development_dependency "rack-test"
   spec.add_development_dependency "timecop", "~> 0.6.3"
+  spec.add_development_dependency "mocha", "~> 0.14.0"
 end

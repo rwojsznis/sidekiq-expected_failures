@@ -10,7 +10,7 @@ module Sidekiq
   end
 
   def self.expected_failures
-    @expected_failures
+    @expected_failures || {}
   end
 
   module ExpectedFailures

@@ -5,6 +5,8 @@ require "minitest/autorun"
 require "minitest/spec"
 require "minitest/mock"
 require "minitest/pride"
+require "mocha/setup"
+
 
 require "timecop"
 require "rack/test"

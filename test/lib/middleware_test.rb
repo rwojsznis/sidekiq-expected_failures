@@ -25,12 +25,10 @@ module Sidekiq
       end
 
       it 'can can be configured to handle exceptions by default' do
-        Sidekiq.expected_failures = [VeryOwn::CustomException]
+        Sidekiq.expected_failures =  { VeryOwn::CustomException => nil }
 
-        assert_block do
-          handler.call(RegularWorker.new, msg, 'default') do
-            raise VeryOwn::CustomException
-          end
+        handler.call(RegularWorker.new, msg, 'default') do
+          raise VeryOwn::CustomException
         end
 
         assert_raises RuntimeError do
@@ -42,41 +40,36 @@ module Sidekiq
 
       it 'respects build-in rescue and ensure blocks' do
         assert_equal 0, $invokes
-        assert_block do
-          handler.call(SingleExceptionWorker.new, msg, 'default') do
-            begin
-            raise ZeroDivisionError.new("We go a problem, sir")
-            rescue ZeroDivisionError => e
-               $invokes += 1
-               raise e # and now this should be caught by middleware
-            ensure
-              $invokes += 1
-            end
+
+        handler.call(SingleExceptionWorker.new, msg, 'default') do
+          begin
+          raise ZeroDivisionError.new("We go a problem, sir")
+          rescue ZeroDivisionError => e
+             $invokes += 1
+             raise e # and now this should be caught by middleware
+          ensure
+            $invokes += 1
           end
         end
+
         assert_equal 2, $invokes
       end
 
       it 'handles all specified exceptions' do
-        assert_block do
-          handler.call(MultipleExceptionWorker.new, msg, 'default') do
-            raise NotImplementedError
-          end
+        handler.call(MultipleExceptionWorker.new, msg, 'default') do
+          raise NotImplementedError
         end
 
-        assert_block do
-          handler.call(MultipleExceptionWorker.new, msg, 'default') do
-            raise VeryOwn::CustomException
-          end
+        handler.call(MultipleExceptionWorker.new, msg, 'default') do
+          raise VeryOwn::CustomException
         end
       end
 
       it 'logs exceptions' do
-        assert_block do
-          handler.call(SingleExceptionWorker.new, msg, 'default') do
-            raise ZeroDivisionError
-          end
+        handler.call(SingleExceptionWorker.new, msg, 'default') do
+          raise ZeroDivisionError
         end
+
 
         assert_equal(['2013-01-10'], redis("smembers", "expected:dates"))
         assert_match(/custom_argument/, redis("lrange", "expected:2013-01-10", 0, -1)[0])
@@ -116,6 +109,40 @@ module Sidekiq
         assert_equal 10, redis("llen", "expected:2013-01-10")
         assert_equal 5, redis("llen", "expected:2013-05-15")
         assert_equal(['2013-05-15', '2013-01-10'].sort, redis("smembers", "expected:dates").sort)
+      end
+
+      describe 'exception notify' do
+
+        it 'can be configured to notify once' do
+          exception = ZeroDivisionError.new
+          handler.expects(:handle_exception).with(exception).once.returns(true)
+
+          50.times do
+            handler.call(CustomizedWorker.new, msg, 'default') do
+              raise exception
+            end
+          end
+        end
+
+        it 'can be configured to notify multiple number of times' do
+          handler.expects(:handle_exception).times(3).returns(true)
+
+          60.times do
+            handler.call(CustomizedWorker.new, msg, 'default') do
+              raise VeryOwn::CustomException
+            end
+          end
+        end
+
+        it 'can be configured not to notify at all' do
+          handler.expects(:handle_exception).never
+
+          60.times do
+            handler.call(CustomizedWorker.new, msg, 'default') do
+              raise NotImplementedError
+            end
+          end
+        end
       end
     end
   end

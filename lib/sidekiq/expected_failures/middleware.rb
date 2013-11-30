@@ -3,37 +3,47 @@ module Sidekiq
     class Middleware
       include Sidekiq::Util
 
+      attr_reader :handled_exceptions
+
       def call(worker, msg, queue)
+        setup_exceptions(worker)
+
         yield
 
-        rescue *handled_exceptions(worker) => e
+        rescue *handled_exceptions.keys => ex
           data = {
             failed_at: Time.now.strftime("%Y/%m/%d %H:%M:%S %Z"),
             args:      msg['args'],
-            exception: e.class.to_s,
-            error:     e.message,
+            exception: ex.class.to_s,
+            error:     ex.message,
             worker:    msg['class'],
             processor: "#{hostname}:#{process_id}-#{Thread.current.object_id}",
             queue:     queue
           }
 
-          log_exception(data)
+          log_exception(data, ex)
       end
 
       private
 
-        def handled_exceptions(worker)
-          (Sidekiq.expected_failures || worker.class.get_sidekiq_options['expected_failures']).to_a
+        def setup_exceptions(worker)
+          @handled_exceptions = worker.class.get_sidekiq_options['expected_failures'] || Sidekiq.expected_failures
         end
 
-        def log_exception(data)
-          Sidekiq.redis do |conn|
+        def exception_intervals(ex)
+          [handled_exceptions[ex.class]].flatten.compact
+        end
+
+        def log_exception(data, ex)
+          result = Sidekiq.redis do |conn|
             conn.multi do |m|
               m.lpush("expected:#{today}", Sidekiq.dump_json(data))
               m.sadd("expected:dates", today)
               m.hincrby("expected:count", data[:exception], 1)
             end
           end
+
+          handle_exception(ex) if exception_intervals(ex).include?(result[0])
         end
 
         def today
