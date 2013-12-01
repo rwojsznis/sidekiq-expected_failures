@@ -2,6 +2,7 @@
 
 [![Code Climate](https://codeclimate.com/github/emq/sidekiq-expected_failures.png)](https://codeclimate.com/github/emq/sidekiq-expected_failures)
 [![Build Status](https://travis-ci.org/emq/sidekiq-expected_failures.png?branch=master)](https://travis-ci.org/emq/sidekiq-expected_failures)
+[![Coverage Status](https://coveralls.io/repos/emq/sidekiq-expected_failures/badge.png)](https://coveralls.io/r/emq/sidekiq-expected_failures)
 
 If you don't rely on standard sidekiq's retry behavior and you want to track exceptions, that will happen one way, or another - this thing is for you.
 
