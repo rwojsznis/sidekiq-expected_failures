@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/emq/sidekiq-expected_failures.png?branch=master)](https://travis-ci.org/emq/sidekiq-expected_failures)
 [![Coverage Status](https://coveralls.io/repos/emq/sidekiq-expected_failures/badge.png)](https://coveralls.io/r/emq/sidekiq-expected_failures)
 [![Dependency Status](https://gemnasium.com/emq/sidekiq-expected_failures.png)](https://gemnasium.com/emq/sidekiq-expected_failures)
+[![Gem Version](https://badge.fury.io/rb/sidekiq-expected_failures.png)](http://badge.fury.io/rb/sidekiq-expected_failures)
 
 If you don't rely on standard sidekiq's retry behavior and you want to track exceptions, that will happen one way, or another - this thing is for you.
 
