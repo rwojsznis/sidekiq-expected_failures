@@ -1,4 +1,4 @@
-## 0.2.0 (in progress)
+## 0.2.0
 
 - [**breaking change**] ability to use Sidekiq's build-in `handle_exception`
   method - in case you want to use airbrake or other exception notify service.
