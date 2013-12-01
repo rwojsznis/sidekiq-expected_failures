@@ -26,7 +26,7 @@ Let's say you do a lot of API requests to some not reliable reliable service. In
 ``` ruby
 class ApiCallWorker
   include ::Sidekiq::Worker
-  sidekiq_options expected_failures: [Timeout::Error]
+  sidekiq_options expected_failures: { Timeout::Error => nil } # handle that exception, but disable notification
 
   def perform(arguments)
     # do some work
@@ -42,11 +42,28 @@ class ApiCallWorker
   end
 ```
 
-You can pass array of exceptions to handle inside `sidekiq_options`. This is how web interface looks like:
+You can pass a hash of exceptions to handle inside `sidekiq_options`. Each key-value pair may consist of:
+- `exception => nil` - notifications disabled
+- `exception => integer` - fires exception notify when x-th exception happens (on daily basis)
+- `exception => [integer, integer]` - same as above but for each value
+
+sidekiq-expected_failures utilizes sidekiq's [ExceptionHandler module][1] - so you might want to set some same limits for your exceptions and use Airbrake (for example) as a notification service to inform you that something bad is probably happing.
+
+This is how web interface looks like:
 
 ![](http://i.imgur.com/7Fe8voD.jpg)
 
 It logs each failed jobs to to redis list (per day) and keep global counters (per exception class as a single redis hash).
+
+### Default expected failures
+
+You can configure defaults for all your workers (overridden completely by specifying `expected_failures` hash inside `sidekiq_options` - per worker).
+
+``` ruby
+Sidekiq.configure_server do |config|
+  config.expected_failures = { ExceptionHandledByDefault => [1000, 2000] } # with notification enabled
+end
+```
 
 ### Usage with sidekiq-failures
 
@@ -69,3 +86,5 @@ This might change in the future to something more sane.
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+[1]: https://github.com/mperham/sidekiq/blob/master/lib/sidekiq/exception_handler.rb#L4
