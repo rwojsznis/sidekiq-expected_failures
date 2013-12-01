@@ -9,10 +9,6 @@ module Sidekiq
       Sidekiq::Web
     end
 
-    def failed_count
-      Sidekiq.redis { |c| c.get("stat:failed") }
-    end
-
     def create_sample_counter
       redis("hset", "expected:count", "StandardError", 5)
       redis("hset", "expected:count", "Custom::Error", 10)
