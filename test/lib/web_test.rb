@@ -135,5 +135,33 @@ module Sidekiq
         end
       end
     end
+
+    describe 'stats' do
+      describe 'when there are no errors' do
+        before do
+          get '/expected_failures/stats'
+          @response = Sidekiq.load_json(last_response.body)
+        end
+
+        it 'can return failures json without any failures' do
+          last_response.status.must_equal(200)
+          assert_equal({}, @response['failures'])
+        end
+      end
+
+      describe 'when there are errors' do
+        before do
+          create_sample_counter
+          get '/expected_failures/stats'
+          @response = Sidekiq.load_json(last_response.body)
+        end
+
+        it 'can return json with failures' do
+          last_response.status.must_equal(200)
+          assert_equal "5", @response['failures']['StandardError']
+          assert_equal "10", @response['failures']['Custom::Error']
+        end
+      end
+    end
   end
 end

@@ -21,6 +21,15 @@ module Sidekiq
           redirect "#{root_path}expected_failures"
         end
 
+        app.get "/expected_failures/stats" do
+          @counters = Sidekiq::ExpectedFailures.counters
+
+          content_type :json
+          Sidekiq.dump_json({
+            failures: @counters
+          })
+        end
+
         app.get "/expected_failures/?:date?" do
           @dates = Sidekiq::ExpectedFailures.dates
           @count = (params[:count] || 50).to_i
