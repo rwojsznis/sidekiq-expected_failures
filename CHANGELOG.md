@@ -1,3 +1,20 @@
+## 0.2.1
+
+- added JSON stats path in case you would like to fetch this data from external service.
+  It works similar to sidekiq's _stats_. You can visit: `expected_failures/stats` to
+  get a JSON response with global counters (PR #4)
+
+``` json
+  {
+
+    "failures": {
+        "ExceptionName": "123",
+        "Other::ExceptionName": "10",
+    }
+
+}
+```
+
 ## 0.2.0
 
 - [**breaking change**] ability to use Sidekiq's build-in `handle_exception`

@@ -56,7 +56,7 @@ This is how web interface looks like:
 
 ![](http://i.imgur.com/7Fe8voD.jpg)
 
-It logs each failed jobs to to redis list (per day) and keep global counters (per exception class as a single redis hash).
+It logs each failed jobs to to redis list (per day) and keep global counters (per exception class as a single redis hash). If you would like to get that counter as JSON response (for some external API usage for example) you can use path `expected_failures/stats`.
 
 ### Default expected failures
 
