@@ -1,3 +1,7 @@
+## 0.2.2
+
+- rescue load error of `sidekiq/web` (this allows client only usage)
+
 ## 0.2.1
 
 - added JSON stats path in case you would like to fetch this data from external service.
