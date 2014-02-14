@@ -1,4 +1,8 @@
-require "sidekiq/web"
+begin
+  require "sidekiq/web"
+  rescue LoadError
+end
+
 require "sidekiq/expected_failures/version"
 require "sidekiq/expected_failures/middleware"
 require "sidekiq/expected_failures/web"
@@ -55,8 +59,10 @@ module Sidekiq
   end
 end
 
-Sidekiq::Web.register Sidekiq::ExpectedFailures::Web
-Sidekiq::Web.tabs["Expected Failures"] = "expected_failures"
+if defined?(Sidekiq::Web)
+  Sidekiq::Web.register Sidekiq::ExpectedFailures::Web
+  Sidekiq::Web.tabs["Expected Failures"] = "expected_failures"
+end
 
 Sidekiq.configure_server do |config|
   config.server_middleware do |chain|
