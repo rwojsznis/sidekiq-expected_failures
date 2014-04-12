@@ -1,8 +1,6 @@
 module Sidekiq
   module ExpectedFailures
     class Middleware
-      include Sidekiq::Util
-
       attr_reader :handled_exceptions
 
       def call(worker, msg, queue)
@@ -17,7 +15,6 @@ module Sidekiq
             exception: ex.class.to_s,
             error:     ex.message,
             worker:    msg['class'],
-            processor: "#{hostname}:#{process_id}-#{Thread.current.object_id}",
             queue:     queue
           }
 
