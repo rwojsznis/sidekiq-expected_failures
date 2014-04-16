@@ -1,3 +1,7 @@
+## 0.2.3
+
+- removed (unnecessary) dependency on `Sidekiq::Util` (now Sidekiq 3.0 compatible)
+
 ## 0.2.2
 
 - rescue load error of `sidekiq/web` (this allows client only usage)
