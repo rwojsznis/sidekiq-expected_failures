@@ -1,6 +1,9 @@
+require 'sidekiq/exception_handler'
+
 module Sidekiq
   module ExpectedFailures
     class Middleware
+      include ExceptionHandler
       attr_reader :handled_exceptions
 
       def call(worker, msg, queue)
