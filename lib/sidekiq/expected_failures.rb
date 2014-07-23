@@ -35,8 +35,8 @@ module Sidekiq
       clear(dates.keys)
     end
 
-    def self.clear_old
-      range = dates.keys.delete_if { |d| Date.parse(d) > Date.today.prev_day }
+    def self.clear_old(days_ago = 1)
+      range = dates.keys.delete_if { |d| Date.parse(d) > Date.today.prev_day(days_ago) }
       clear(range)
     end
 

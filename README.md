@@ -77,7 +77,7 @@ Just be sure to load this one after `sidekiq-failures`, otherwise failed jobs wi
 At the moment you have 3 public methods in `Sidekiq::ExpectedFailures` module:
 
 - `clear_counters` - clears all counters (as I mentioned - it's stored inside single redis hash, but I doubt anyone would like to log more than 500 different exceptions, right?)
-- `clear_old` - clears failed jobs older than today
+- `clear_old(days_ago)` - clears failed jobs older than days_ago days (this is 1 by default)
 - `clear_all` - clears all failed jobs
 
 This might change in the future to something more sane.
