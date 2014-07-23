@@ -1,3 +1,9 @@
+## 0.2.4
+
+- `Sidekiq::ExpectedFailures.clear_old` can now accept argument - will remove failures
+  that are n days old (1 by default) - useful if you want to clear some of old failures
+  using cronjob
+
 ## 0.2.3
 
 - removed (unnecessary) dependency on `Sidekiq::Util` (now Sidekiq 3.0 compatible)
