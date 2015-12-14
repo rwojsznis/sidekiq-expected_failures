@@ -22,6 +22,7 @@
 
 <% if @jobs.any? || @counters.any? %>
   <form id="clear-jobs" method="post" class="form-inline pull-right" action="<%= root_path %>expected_failures/clear">
+    <%= csrf_tag if respond_to?(:csrf_tag) %>
     <label>Clear:</label>
     <select name="what">
       <option selected>Choose...</option>

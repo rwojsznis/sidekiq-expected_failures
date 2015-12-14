@@ -1,3 +1,7 @@
+## 0.2.5
+
+- add csrf tag for sidekiq >= 3.4.2
+
 ## 0.2.4
 
 - `Sidekiq::ExpectedFailures.clear_old` can now accept argument - will remove failures
