@@ -6,23 +6,26 @@ end
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
+ENV['RACK_ENV'] = 'test'
+
 require "minitest/autorun"
-require "minitest/spec"
-require "minitest/mock"
 require "minitest/pride"
-require "mocha/setup"
 
-
+require "mocha/api"
 require "timecop"
 require "rack/test"
 
 require "sidekiq"
+require "sidekiq/web"
+
 require "sidekiq-expected_failures"
-require "test_workers"
+require "sidekiq/expected_failures/web"
+
+require_relative "test_workers"
 
 Sidekiq.logger.level = Logger::ERROR
 
-REDIS = Sidekiq::RedisConnection.create(url: "redis://localhost/15", namespace: "sidekiq_expected_failures")
+REDIS = Sidekiq::RedisConnection.create(url: "redis://localhost/15")
 
 def redis(command, *args)
   Sidekiq.redis do |c|

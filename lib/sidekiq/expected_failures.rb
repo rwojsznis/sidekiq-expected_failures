@@ -1,6 +1,6 @@
 require "sidekiq/expected_failures/version"
 require "sidekiq/expected_failures/middleware"
-require "sidekiq/expected_failures/web"
+
 
 module Sidekiq
 
@@ -52,11 +52,6 @@ module Sidekiq
         end
       end
   end
-end
-
-if defined?(Sidekiq::Web)
-  Sidekiq::Web.register Sidekiq::ExpectedFailures::Web
-  Sidekiq::Web.tabs["Expected Failures"] = "expected_failures"
 end
 
 Sidekiq.configure_server do |config|

@@ -51,3 +51,6 @@ module Sidekiq
     end
   end
 end
+
+Sidekiq::Web.register Sidekiq::ExpectedFailures::Web
+Sidekiq::Web.tabs["Expected Failures"] = "expected_failures"

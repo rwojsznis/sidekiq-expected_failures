@@ -1,5 +1,4 @@
 require "test_helper"
-require "sidekiq/web"
 
 module Sidekiq
   describe "WebExtension" do
