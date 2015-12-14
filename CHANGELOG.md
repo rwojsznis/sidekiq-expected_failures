@@ -1,6 +1,7 @@
 ## 0.2.5
 
 - add csrf tag for sidekiq >= 3.4.2
+- don't load `sidekiq/web` automagically at all (it never made any sense)
 
 ## 0.2.4
 

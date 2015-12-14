@@ -1,8 +1,3 @@
-begin
-  require "sidekiq/web"
-  rescue LoadError
-end
-
 require "sidekiq/expected_failures/version"
 require "sidekiq/expected_failures/middleware"
 require "sidekiq/expected_failures/web"
