@@ -1,7 +1,14 @@
 ## 0.2.5
 
 - add csrf tag for sidekiq >= 3.4.2
-- don't load `sidekiq/web` automagically at all (it never made any sense)
+- **[BREAKING CHANGE]** don't load `sidekiq/web` automagically at
+  all (it never made any sense), instead do something like:
+
+``` ruby
+require 'sidekiq/web'
+# then load expected failures panel
+require 'sidekiq/expected_failures/web'
+```
 
 ## 0.2.4
 
