@@ -1,3 +1,7 @@
+## 0.3.0
+
+- require Sidekiq >= 4.2.0 (after Sinatra dependency was removed)
+
 ## 0.2.5
 
 - add csrf tag for sidekiq >= 3.4.2

@@ -72,6 +72,8 @@ end
 
 Just be sure to load this one after `sidekiq-failures`, otherwise failed jobs will end up logged twice - and you probably don't want that.
 
+If you want to load the web panel be sure to require `sidekiq/expected_failures/web` after `sidekiq/web`.
+
 ### Clearing failures
 
 At the moment you have 3 public methods in `Sidekiq::ExpectedFailures` module:

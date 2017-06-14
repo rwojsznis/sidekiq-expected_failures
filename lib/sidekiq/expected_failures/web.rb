@@ -22,15 +22,10 @@ module Sidekiq
         end
 
         app.get "/expected_failures/stats" do
-          @counters = Sidekiq::ExpectedFailures.counters
-
-          content_type :json
-          Sidekiq.dump_json({
-            failures: @counters
-          })
+          json(failures: Sidekiq::ExpectedFailures.counters)
         end
 
-        app.get "/expected_failures/?:date?" do
+        app.get "/expected_failures" do
           @dates = Sidekiq::ExpectedFailures.dates
           @count = (params[:count] || 50).to_i
 

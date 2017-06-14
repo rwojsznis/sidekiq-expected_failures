@@ -78,7 +78,7 @@
 
   <p class="clearfix"></p>
 
-  <%= erb :_paging, :locals => { :url => "#{root_path}expected_failures/#{@date}" } %>
+  <%= erb :_paging, locals: { url: "#{root_path}expected_failures?date=#{@date}" } %>
 
   <table id="expected" class="queues table table-hover table-bordered table-striped table-white">
     <thead>
@@ -99,7 +99,7 @@
     <% end %>
   </table>
 
-  <%= erb :_paging, :locals => { :url => "#{root_path}expected_failures/#{@date}" } %>
+  <%= erb :_paging, locals: { url: "#{root_path}expected_failures/#{@date}" } %>
 
 <% else %>
   <p class="clearfix"></p>
