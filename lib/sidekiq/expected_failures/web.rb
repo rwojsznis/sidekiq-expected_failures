@@ -7,8 +7,12 @@ module Sidekiq
         app.helpers do
           def link_to_details(job)
             data = []
-            job["args"].each_with_index { |argument, index| data << "data-#{index+1}='#{h argument.inspect}'" }
-            "<a href='#' #{data.join(' ')} title='#{job["worker"]}'>Details</a>"
+            search = ""
+            job["args"].each_with_index do |argument, index|
+              data << "data-#{index+1}='#{h argument.inspect}'"
+              search << h(argument.inspect)
+            end
+            "<a href='#' data-search='#{search.downcase}' #{data.join(' ')} title='#{job["worker"]}'>Details</a>"
           end
         end
 

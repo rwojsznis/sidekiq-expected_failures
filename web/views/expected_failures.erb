@@ -3,9 +3,30 @@
 </script>
 
 <style type="text/css">
-.modal-dialog {
-  min-width: 85vw;
-}
+  @media screen and (min-width: 800px) {
+    .dl-horizontal dt {
+      width: 320px;
+    }
+
+    .dl-horizontal dd {
+      margin-left: 330px;
+    }
+  }
+
+  .modal-dialog {
+    min-width: 85vw;
+  }
+
+  .simple-search {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .search-warning {
+    text-align: center;
+    font-weight: 700;
+    padding: 10px;
+  }
 </style>
 
 <h3>Expected failures log
@@ -86,6 +107,9 @@
 
   <%= erb :_paging, locals: { url: "#{root_path}expected_failures/day/#{@date}" } %>
 
+  <p class="clearfix"></p>
+  <input autocomplete="off" type="text" id="search" class="simple-search hidden" placeholder="Search visible results" />
+
   <table id="expected" class="queues table table-hover table-bordered table-striped table-white">
     <thead>
       <th>Datetime</th>
@@ -94,15 +118,17 @@
       <th>Queue</th>
       <th>Arguments</th>
     </thead>
-    <% @jobs.each do |job| %>
-      <tr>
-        <td><%= Time.parse(job['failed_at']).strftime('%m/%d/%Y %H:%M:%S') %></td>
-        <td><%= job["worker"] %></td>
-        <td><%= job["exception"] %> <small>(<%= job["error"]%>)</small></td>
-        <td><a href="<%= "#{root_path}/queues/#{job["queue"]}"%>"><%= job["queue"] %></a></td>
-        <td><%= link_to_details(job) %></td>
-      </tr>
-    <% end %>
+    <tbody>
+      <% @jobs.each do |job| %>
+        <tr>
+          <td><%= Time.parse(job['failed_at']).strftime('%m/%d/%Y %H:%M:%S') %></td>
+          <td><%= job["worker"] %></td>
+          <td><div data-search="<%= job['exception'].to_s.downcase %><%= h job["error"].to_s.downcase %>"><%= job["exception"] %> <small>(<%= h job["error"]%>)</small></div></td>
+          <td><a href="<%= "#{root_path}/queues/#{job["queue"]}"%>"><%= job["queue"] %></a></td>
+          <td><%= link_to_details(job) %></td>
+        </tr>
+      <% end %>
+    </tbody>
   </table>
 
   <%= erb :_paging, locals: { url: "#{root_path}expected_failures/day/#{@date}" } %>
