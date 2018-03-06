@@ -77,14 +77,14 @@
     <label>Choose date:</label>
     <select name="date">
       <% @dates.each do |date, count| %>
-        <option value="<%= date %>" <%= "selected" if date == @date %>><%= date %> (<%= count %>)</option>
+        <option value="<%= "#{root_path}expected_failures/day/#{date}" %>" <%= "selected" if date == @date %>><%= date %> (<%= count %>)</option>
       <% end %>
     </select>
   </form>
 
   <p class="clearfix"></p>
 
-  <%= erb :_paging, locals: { url: "#{root_path}expected_failures?date=#{@date}" } %>
+  <%= erb :_paging, locals: { url: "#{root_path}expected_failures/day/#{@date}" } %>
 
   <table id="expected" class="queues table table-hover table-bordered table-striped table-white">
     <thead>
@@ -105,7 +105,7 @@
     <% end %>
   </table>
 
-  <%= erb :_paging, locals: { url: "#{root_path}expected_failures/#{@date}" } %>
+  <%= erb :_paging, locals: { url: "#{root_path}expected_failures/day/#{@date}" } %>
 
 <% else %>
   <p class="clearfix"></p>

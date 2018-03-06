@@ -15,7 +15,11 @@
     e.preventDefault();
   });
 
-  $('#filter-jobs select, #clear-jobs select').live('change', function(e){
+  $('#clear-jobs select').live('change', function(e){
     $(this).parent('form').submit();
+  });
+
+  $('#filter-jobs select').live('change', function(e){
+    location.href = $(this).val();
   });
  });

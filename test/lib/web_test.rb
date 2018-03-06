@@ -42,7 +42,7 @@ module Sidekiq
 
     after { Timecop.return }
 
-    it 'can display home with expected failures llink' do
+    it 'can display home with expected failures link' do
       get '/'
       last_response.status.must_equal(200)
       last_response.body.must_include('<a href="/expected_failures">Expected Failures</a>')
@@ -159,6 +159,22 @@ module Sidekiq
           assert_equal "5", @response['failures']['StandardError']
           assert_equal "10", @response['failures']['Custom::Error']
         end
+      end
+    end
+
+    describe 'pagination & filtering' do
+      before do
+        51.times { create_sample_failure }
+      end
+
+      it 'displays pagination widget when needed' do
+        get '/expected_failures'
+        last_response.body.must_include('<ul class="pagination')
+      end
+
+      it 'properly links to next page' do
+        get '/expected_failures/day/2013-09-10'
+        last_response.body.must_include('/expected_failures/day/2013-09-10?page=2')
       end
     end
   end

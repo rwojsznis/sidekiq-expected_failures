@@ -24,7 +24,7 @@ module Sidekiq
           json(failures: Sidekiq::ExpectedFailures.counters)
         end
 
-        app.get "/expected_failures" do
+        panel = proc do
           @dates = Sidekiq::ExpectedFailures.dates
           @count = (params[:count] || 50).to_i
 
@@ -40,6 +40,14 @@ module Sidekiq
           end.join
 
           erb File.read(File.join(web_dir, "views/expected_failures.erb"))
+        end
+
+        app.get "/expected_failures/day/:date" do
+          self.instance_exec(&panel)
+        end
+
+        app.get "/expected_failures" do
+          self.instance_exec(&panel)
         end
       end
     end
