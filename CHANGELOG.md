@@ -1,4 +1,4 @@
-## 0.4.0
+## 0.4.0 (March 6, 2018)
 
 Interface changes & maintenance, API untouched.
 
