@@ -2,7 +2,9 @@
   function mapDataAttributes(element) {
     var html = "";
     $.each(element.data(), function( key, value ) {
-      html += "<tr><th>Argument #" + key + "</th><td>" + value + "</td></tr>";
+      if (key != 'search') {
+        html += "<tr><th>Argument #" + key + "</th><td>" + value + "</td></tr>";
+      }
     });
     return html;
   }

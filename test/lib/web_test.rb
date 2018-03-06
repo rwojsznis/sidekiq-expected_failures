@@ -104,7 +104,7 @@ module Sidekiq
         it 'does not display counter div' do
           create_sample_failure
           get '/expected_failures'
-          last_response.body.wont_match(/dl-horizontal/)
+          last_response.body.wont_include('<dl class="dl-horizontal')
           last_response.body.wont_match(/All counters/i)
         end
       end
@@ -114,7 +114,7 @@ module Sidekiq
 
         it 'displays counters' do
           get '/expected_failures'
-          last_response.body.must_match(/dl-horizontal/)
+          last_response.body.must_include('<dl class="dl-horizontal')
           last_response.body.must_match(/All counters/i)
         end
 
