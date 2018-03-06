@@ -4,7 +4,6 @@ module Sidekiq
   module ExpectedFailures
     describe "Middleware" do
       before do
-        $invokes = 0
         Sidekiq.redis = REDIS
         Sidekiq.redis { |c| c.flushdb }
         Timecop.freeze(Time.local(2013, 1, 10))
@@ -39,20 +38,21 @@ module Sidekiq
       end
 
       it 'respects build-in rescue and ensure blocks' do
-        assert_equal 0, $invokes
+        invokes = 0
+        assert_equal 0, invokes
 
         handler.call(SingleExceptionWorker.new, msg, 'default') do
           begin
           raise ZeroDivisionError.new("We go a problem, sir")
           rescue ZeroDivisionError => e
-             $invokes += 1
+             invokes += 1
              raise e # and now this should be caught by middleware
           ensure
-            $invokes += 1
+            invokes += 1
           end
         end
 
-        assert_equal 2, $invokes
+        assert_equal 2, invokes
       end
 
       it 'handles all specified exceptions' do
@@ -69,7 +69,6 @@ module Sidekiq
         handler.call(SingleExceptionWorker.new, msg, 'default') do
           raise ZeroDivisionError
         end
-
 
         assert_equal(['2013-01-10'], redis("smembers", "expected:dates"))
         assert_match(/custom_argument/, redis("lrange", "expected:2013-01-10", 0, -1)[0])

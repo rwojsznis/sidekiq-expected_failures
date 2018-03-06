@@ -1,7 +1,6 @@
 module Sidekiq
   module ExpectedFailures
     module Web
-
       def self.registered(app)
         web_dir = File.expand_path("../../../../web", __FILE__)
 

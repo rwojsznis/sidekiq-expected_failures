@@ -3,9 +3,6 @@ Coveralls.wear! do
   add_filter "/test/"
 end
 
-Encoding.default_external = Encoding::UTF_8
-Encoding.default_internal = Encoding::UTF_8
-
 ENV['RACK_ENV'] = 'test'
 
 require "minitest/autorun"
@@ -29,6 +26,6 @@ REDIS = Sidekiq::RedisConnection.create(url: "redis://localhost/15")
 
 def redis(command, *args)
   Sidekiq.redis do |c|
-    c.send(command, *args)
+    c.public_send(command, *args)
   end
 end

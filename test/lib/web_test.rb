@@ -42,11 +42,10 @@ module Sidekiq
 
     after { Timecop.return }
 
-    it 'can display home with failures tab' do
+    it 'can display home with expected failures llink' do
       get '/'
       last_response.status.must_equal(200)
-      last_response.body.must_match(/Sidekiq/)
-      last_response.body.must_match(/Expected Failures/)
+      last_response.body.must_include('<a href="/expected_failures">Expected Failures</a>')
     end
 
     it 'can display failures page without any failures' do

@@ -3,7 +3,6 @@ require "sidekiq/expected_failures/middleware"
 
 
 module Sidekiq
-
   def self.expected_failures=(exceptions)
     @expected_failures = exceptions
   end
@@ -13,7 +12,6 @@ module Sidekiq
   end
 
   module ExpectedFailures
-
     def self.dates
       Sidekiq.redis do |c|
         c.smembers "expected:dates"
@@ -41,16 +39,16 @@ module Sidekiq
 
     private
 
-      def self.clear(dates)
-        dates.each do |date|
-          Sidekiq.redis do |c|
-            c.multi do |m|
-              m.srem("expected:dates", date)
-              m.del("expected:#{date}")
-            end
+    def self.clear(dates)
+      dates.each do |date|
+        Sidekiq.redis do |c|
+          c.multi do |m|
+            m.srem("expected:dates", date)
+            m.del("expected:#{date}")
           end
         end
       end
+    end
   end
 end
 
