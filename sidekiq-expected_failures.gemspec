@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rack-test"
   spec.add_development_dependency "timecop", "~> 0.7.0"
   spec.add_development_dependency "mocha", "~> 1.0.0"
-  spec.add_development_dependency "coveralls", "~> 0.7.0"
+  spec.add_development_dependency "coveralls", "~> 0.8.0"
   spec.add_development_dependency "minitest", "~> 5.7", ">= 5.7.0"
+  spec.add_development_dependency "appraisal"
 end
