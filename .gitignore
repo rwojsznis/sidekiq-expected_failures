@@ -20,3 +20,4 @@ tmp
 .ruby-gemset
 .coveralls.yml
 *.gemfile.lock
+.DS_Store

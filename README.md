@@ -54,9 +54,11 @@ sidekiq-expected_failures utilizes sidekiq's [ExceptionHandler module][1] - so y
 
 This is how web interface looks like:
 
-![](http://i.imgur.com/7Fe8voD.jpg)
+![](img/interface.gif?raw=true)
 
 It logs each failed jobs to to redis list (per day) and keep global counters (per exception class as a single redis hash). If you would like to get that counter as JSON response (for some external API usage for example) you can use path `expected_failures/stats`.
+
+To activate naive filter/search (filters by exception, exception message or argument - simple contains case-insensitive match) press `F3` or `Cmd` / `Ctrl` + `F`.
 
 ### Default expected failures
 
